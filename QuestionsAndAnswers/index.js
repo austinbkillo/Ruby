@@ -34,12 +34,12 @@ app.post('/', (req, res) => {
 })
 //Mark Question Reported
 app.put('/qa/questions/:id/report', (req, res) => {
-  console.log(req.params.id)
-  const result = db.markQuestionReported(req.params.id).then((data)=>{
+  db.markQuestionReported(req.params.id).then((data)=>{
     res.send(data)});
 })
 //Mark Question Helpful
 app.put('/qa/questions/:id/helpful', (req, res) => {
+  console.log(typeof req.params.id)
   db.markQuestionHelpful(req.params.id).then((data)=>{
     res.send(data)
   });

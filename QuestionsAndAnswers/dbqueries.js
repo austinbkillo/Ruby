@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const questionSchema = new Schema({
+  _id: mongoose.Types.ObjectId,
   id: Number,
   product_id: Number,
   body: String,
@@ -34,16 +35,17 @@ const getAllQuestions = (productID) => {
 
 //Mark Question as reported
 const markQuestionReported = (questionID) => {
-  const filter = {id: questionID};
+  // const filter = {_id: ObjectId(questionID)};
   const update = {reported: 1}
-  let query = Question.updateOne(filter, update).then();
+  let query = Question.findByIdAndUpdate(questionID, update).then();
   return query;
 }
 
 const markQuestionHelpful = (questionID) => {
-  const filter = {id: questionID};
+  // const filter = {_id: `ObjectId(${questionID})`};
   const update = {$inc: {helpful: 1}};
-  let query = Question.updateOne(filter, update);
+  let query = Question.findByIdAndUpdate(questionID, update)
+  // let query = Question.updateOne(filter, update);
   return query;
 }
 
