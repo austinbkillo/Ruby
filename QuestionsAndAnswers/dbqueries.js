@@ -39,6 +39,14 @@ const markQuestionReported = (questionID) => {
   return query;
 }
 
+const markQuestionHelpful = (questionID) => {
+  const filter = {id: questionID};
+  const update = {$inc: {helpful: 1}}
+  let query = Question.updateOne(filter, update);
+  return query;
+}
+
 module.exports = {
-  markQuestionReported: markQuestionReported
+  markQuestionReported: markQuestionReported,
+  markQuestionHelpful: markQuestionHelpful
 }

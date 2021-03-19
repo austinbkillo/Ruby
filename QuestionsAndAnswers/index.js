@@ -39,10 +39,11 @@ app.put('/questions/report/:id', (req, res) => {
     console.log(data);
     res.send(data)});
 })
-//Mark Answer Helpful
-app.put('/', (req, res) => {
-  console.log('receiving')
-  res.send('senderoni')
+//Mark Question Helpful
+app.put('/questions/helpful/:id', (req, res) => {
+  db.markQuestionHelpful(req.params.id).then((data)=>{
+    res.send(data)
+  });
 })
 //Mark Question Reported
 app.put('/questions/reported', (req, res) => {
