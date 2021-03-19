@@ -33,27 +33,28 @@ app.post('/', (req, res) => {
   res.send('senderoni')
 })
 //Mark Question Reported
-app.put('/questions/report/:id', (req, res) => {
+app.put('/qa/questions/:id/report', (req, res) => {
   console.log(req.params.id)
   const result = db.markQuestionReported(req.params.id).then((data)=>{
-    console.log(data);
     res.send(data)});
 })
 //Mark Question Helpful
-app.put('/questions/helpful/:id', (req, res) => {
+app.put('/qa/questions/:id/helpful', (req, res) => {
   db.markQuestionHelpful(req.params.id).then((data)=>{
     res.send(data)
   });
 })
-//Mark Question Reported
-app.put('/questions/reported', (req, res) => {
-  console.log('receiving')
-  res.send('senderoni')
-})
 //Mark Answer Reported
-app.put('/', (req, res) => {
-  console.log('receiving')
-  res.send('senderoni')
+app.put('/qa/answers/:id/report', (req, res) => {
+  db.markAnswerReported(req.params.id).then((data)=>{
+    res.send(data);
+  })
+})
+//Mark Answer Helpful
+app.put('/qa/answers/:id/helpful', (req, res) => {
+  db.markAnswerHelpful(req.params.id).then((data)=>{
+    res.send(data);
+  })
 })
 
 

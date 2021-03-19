@@ -13,18 +13,19 @@ const questionSchema = new Schema({
   reported: Number,
 });
 
-// const answerSchema = new Schema({
-//   id: ObjectId,
-//   question_id: ObjectId,
-//   body: String,
-//   date_written: Date,
-//   answerer_name: String,
-//   answerer_email: String,
-//   reported: Boolean,
-//   helpfulness: Number
-// })
+const answerSchema = new Schema({
+  id: Number,
+  question_id: Number,
+  body: String,
+  date_written: Date,
+  answerer_name: String,
+  answerer_email: String,
+  reported: Number,
+  helpful: Number
+})
 
 const Question = mongoose.model('Question', questionSchema);
+const Answer = mongoose.model('Answer', answerSchema);
 
 //Get all Questions
 const getAllQuestions = (productID) => {
@@ -41,12 +42,28 @@ const markQuestionReported = (questionID) => {
 
 const markQuestionHelpful = (questionID) => {
   const filter = {id: questionID};
-  const update = {$inc: {helpful: 1}}
+  const update = {$inc: {helpful: 1}};
   let query = Question.updateOne(filter, update);
+  return query;
+}
+
+const markAnswerReported = (answerID) => {
+  const filter = {id: answerID};
+  const update = {reported: 1}
+  let query = Answer.updateOne(filter, update);
+  return query;
+}
+
+const markAnswerHelpful = (answerID) => {
+  const filter = {id: answerID};
+  const update = {$inc: {helpful: 1}};
+  let query = Answer.updateOne(filter, update);
   return query;
 }
 
 module.exports = {
   markQuestionReported: markQuestionReported,
-  markQuestionHelpful: markQuestionHelpful
+  markQuestionHelpful: markQuestionHelpful,
+  markAnswerReported: markAnswerReported,
+  markAnswerHelpful: markAnswerHelpful
 }
