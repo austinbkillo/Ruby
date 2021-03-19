@@ -39,7 +39,6 @@ app.put('/qa/questions/:id/report', (req, res) => {
 })
 //Mark Question Helpful
 app.put('/qa/questions/:id/helpful', (req, res) => {
-  console.log(typeof req.params.id)
   db.markQuestionHelpful(req.params.id).then((data)=>{
     res.send(data)
   });

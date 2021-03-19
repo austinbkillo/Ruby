@@ -50,16 +50,14 @@ const markQuestionHelpful = (questionID) => {
 }
 
 const markAnswerReported = (answerID) => {
-  const filter = {id: answerID};
   const update = {reported: 1}
-  let query = Answer.updateOne(filter, update);
+  let query = Answer.findByIdAndUpdate(answerID, update);
   return query;
 }
 
 const markAnswerHelpful = (answerID) => {
-  const filter = {id: answerID};
   const update = {$inc: {helpful: 1}};
-  let query = Answer.updateOne(filter, update);
+  let query = Answer.findByIdAndUpdate(answerID, update);
   return query;
 }
 
