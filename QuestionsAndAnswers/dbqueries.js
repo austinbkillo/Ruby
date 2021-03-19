@@ -30,38 +30,47 @@ const Answer = mongoose.model('Answer', answerSchema);
 
 //Get all Questions
 const getAllQuestions = (productID) => {
-  Question.find({"product_id": productID})
+  let query = Question.find({"product_id": productID});
+  return query;
+}
+const getAnswers = (questionID) => {
+  let query = Answer.find({question_id: questionID});
+  return query;
 }
 
 //Mark Question as reported
 const markQuestionReported = (questionID) => {
-  // const filter = {_id: ObjectId(questionID)};
+  const filter = {id: questionID};
   const update = {reported: 1}
-  let query = Question.findByIdAndUpdate(questionID, update).then();
+  let query = Question.findOneAndUpdate(filter, update);
   return query;
 }
 
 const markQuestionHelpful = (questionID) => {
-  // const filter = {_id: `ObjectId(${questionID})`};
+  const filter = {id: questionID};
   const update = {$inc: {helpful: 1}};
-  let query = Question.findByIdAndUpdate(questionID, update)
+  let query = Question.findOneAndUpdate(filter, update)
   // let query = Question.updateOne(filter, update);
   return query;
 }
 
 const markAnswerReported = (answerID) => {
   const update = {reported: 1}
-  let query = Answer.findByIdAndUpdate(answerID, update);
+  const filter = {id: answerID}
+  let query = Answer.findOneAndUpdate(filter, update);
   return query;
 }
 
 const markAnswerHelpful = (answerID) => {
   const update = {$inc: {helpful: 1}};
-  let query = Answer.findByIdAndUpdate(answerID, update);
+  const filter = {id: answerID}
+  let query = Answer.findOneAndUpdate(filter, update);
   return query;
 }
 
 module.exports = {
+  getAllQuestions: getAllQuestions,
+  getAnswers: getAnswers,
   markQuestionReported: markQuestionReported,
   markQuestionHelpful: markQuestionHelpful,
   markAnswerReported: markAnswerReported,

@@ -11,10 +11,22 @@ mongoose.connection
     console.log(error)
   })
 
-//Get questions
-app.get('/', (req, res) => {
-  console.log('receiving')
-  res.send('senderoni')
+//Get all questions
+app.get('/qa/questions/:productID', (req, res) => {
+  let questionsArray;
+  db.getAllQuestions(req.params.productID)
+  .then((data)=>{
+    questionsArray = data;
+  })
+  .then(() => {
+    for (let i = 0; i < questionsArray.length; i++) {
+      db.getAnswers(questionsArray[i]._id).then((data)=>{
+        questionsArray[i].answers = data;
+      })
+    }
+  }).then(()=>{
+    res.send(questionsArray)
+  })
 })
 
 //get answers
