@@ -24,10 +24,19 @@ const answerSchema = new Schema({
   reported: Number,
   helpful: Number
 })
+const counterSchema = new Schema({
+  counter: Number
+})
 
 const Question = mongoose.model('Question', questionSchema);
 const Answer = mongoose.model('Answer', answerSchema);
+const Count = mongoose.model('Count', counterSchema, 'count')
 
+//count all questions
+const getCurrentCount = () => {
+  let query = Count.find();
+  return query;
+}
 //Get all Questions
 const getAllQuestions = (productID) => {
   let query = Question.find({"product_id": productID});
@@ -69,6 +78,7 @@ const markAnswerHelpful = (answerID) => {
 }
 
 module.exports = {
+  getCurrentCount: getCurrentCount,
   getAllQuestions: getAllQuestions,
   getAnswers: getAnswers,
   markQuestionReported: markQuestionReported,

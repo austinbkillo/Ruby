@@ -5,27 +5,53 @@ const mongoose = require('mongoose');
 const db = require('./dbqueries');
 mongoose.connect("/mongodb://127.0.0.1:27017/SDC", {useNewUrlParser: true})
 
+
+let questionCount;
+let answerCount;
 mongoose.connection
-  .on('open', (() => {console.log('connected')}))
+  .on('open', (() => {
+    console.log('connected')
+    db.getCurrentCount().then((data)=>{
+      console.log(data[0].counter);
+      questionCount = data[0].counter;
+    })
+  }))
   .on('error', (error) => {
     console.log(error)
+  })
+
+  app.listen(port, ()=>{
+    console.log('listening at ' + port);
   })
 
 //Get all questions
 app.get('/qa/questions/:productID', (req, res) => {
   let questionsArray;
+  let answersArray;
+  let clientArray = [];
+  let loop = async function(q) {
+    let copy = q._doc;
+    copy.answers = await db.getAnswers(q.id)
+    copy.random = "parker";
+    console.log(copy);
+    clientArray.push(copy);
+
+  }
   db.getAllQuestions(req.params.productID)
-  .then((data)=>{
+  .then(async (data) => {
     questionsArray = data;
-  })
-  .then(() => {
+    const queries = [];
     for (let i = 0; i < questionsArray.length; i++) {
-      db.getAnswers(questionsArray[i]._id).then((data)=>{
-        questionsArray[i].answers = data;
-      })
+      await loop(questionsArray[i]);
+      if (i === questionsArray.length - 1) {
+
+      res.send(clientArray);
     }
-  }).then(()=>{
-    res.send(questionsArray)
+    }
+
+  })
+  .catch((err)=>{
+    console.error(err);
   })
 })
 
@@ -69,6 +95,3 @@ app.put('/qa/answers/:id/helpful', (req, res) => {
 })
 
 
-app.listen(port, ()=>{
-  console.log('listening at ' + port);
-})
