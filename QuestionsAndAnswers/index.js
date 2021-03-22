@@ -64,12 +64,20 @@ app.get('/qa/questions/:questionid/answers', (req, res) => {
 
 })
 //Post Question
-app.post('/', (req, res) => {
+app.post('/qa/questions', (req, res) => {
+  let body = req.body.body;
+  let name = req.body.name;
+  let email = req.body.email;
+  let product_id = req.body.product_id;
   console.log('receiving')
   res.send('senderoni')
 })
 //Post Answer
-app.post('/', (req, res) => {
+app.post('/qa/questions/questionid/answers', (req, res) => {
+  let question_id = req.params.questionid;
+  let body = req.body.body;
+  let name = req.body.name;
+  let email = req.body.name;
   console.log('receiving')
   res.send('senderoni')
 })
