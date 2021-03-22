@@ -56,9 +56,12 @@ app.get('/qa/questions/:productID', (req, res) => {
 })
 
 //get answers
-app.get('/', (req, res) => {
-  console.log('receiving')
-  res.send('senderoni')
+app.get('/qa/questions/:questionid/answers', (req, res) => {
+  db.getAnswers(req.params.questionid)
+  .then((data)=>{
+    res.send(data);
+  })
+
 })
 //Post Question
 app.post('/', (req, res) => {
