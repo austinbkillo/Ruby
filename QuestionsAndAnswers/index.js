@@ -11,10 +11,9 @@ let answerCount;
 mongoose.connection
   .on('open', (() => {
     console.log('connected')
-    // db.getCurrentCount().then((data)=>{
-    //   console.log(data[0].counter);
-    //   questionCount = data[0].counter;
-    // })
+    db.getCurrentCount().then((data)=>{
+      console.log(data[0].counter);
+    })
   }))
   .on('error', (error) => {
     console.log(error)
@@ -70,8 +69,11 @@ app.post('/qa/questions', (req, res) => {
     console.log(req.body.id);
   })
   db.postQuestion(req.body).then(
-    (data) => {
-      res.send(data);
+    (data1) => {
+      db.updateCurrentCount()
+      .then(()=>{
+        res.send(data1);
+      });
     }
   )
 })

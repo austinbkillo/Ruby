@@ -24,7 +24,8 @@ const answerSchema = new Schema({
   helpful: Number
 })
 const counterSchema = new Schema({
-  counter: Number
+  counter: Number,
+  id: Number
 })
 const photoSchema = new Schema({
   id: Number,
@@ -40,6 +41,10 @@ const Photo = mongoose.model('Photo', photoSchema, 'photo');
 const getCurrentCount = () => {
   let query = Count.find();
   return query;
+}
+const updateCurrentCount = () => {
+  const update = {$inc: {counter: 1}}
+  return Count.findOneAndUpdate({"id": 1}, update);
 }
 const getAllQuestions = (productID) => {
   let query = Question.find({"product_id": productID});
@@ -125,6 +130,7 @@ const getPhotos = (answerID) => {
 }
 
 module.exports = {
+  updateCurrentCount: updateCurrentCount,
   getPhotos: getPhotos,
   postQuestion: postQuestion,
   postAnswer: postAnswer,
