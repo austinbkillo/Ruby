@@ -4,17 +4,17 @@ const port = 3000;
 const mongoose = require('mongoose');
 const db = require('./dbqueries');
 mongoose.connect("/mongodb://127.0.0.1:27017/SDC", {useNewUrlParser: true})
-
+app.use(express.json());
 
 let questionCount;
 let answerCount;
 mongoose.connection
   .on('open', (() => {
     console.log('connected')
-    db.getCurrentCount().then((data)=>{
-      console.log(data[0].counter);
-      questionCount = data[0].counter;
-    })
+    // db.getCurrentCount().then((data)=>{
+    //   console.log(data[0].counter);
+    //   questionCount = data[0].counter;
+    // })
   }))
   .on('error', (error) => {
     console.log(error)
@@ -29,13 +29,12 @@ app.get('/qa/questions/:productID', (req, res) => {
   let questionsArray;
   let answersArray;
   let clientArray = [];
+  let clientPhotoArray = [];
   let loop = async function(q) {
     let copy = q._doc;
     copy.answers = await db.getAnswers(q.id)
-    copy.random = "parker";
     console.log(copy);
     clientArray.push(copy);
-
   }
   db.getAllQuestions(req.params.productID)
   .then(async (data) => {
@@ -65,12 +64,16 @@ app.get('/qa/questions/:questionid/answers', (req, res) => {
 })
 //Post Question
 app.post('/qa/questions', (req, res) => {
-  let body = req.body.body;
-  let name = req.body.name;
-  let email = req.body.email;
-  let product_id = req.body.product_id;
-  console.log('receiving')
-  res.send('senderoni')
+  db.getCurrentCount()
+  .then((data)=>{
+    req.body.id = data[0].counter;
+    console.log(req.body.id);
+  })
+  db.postQuestion(req.body).then(
+    (data) => {
+      res.send(data);
+    }
+  )
 })
 //Post Answer
 app.post('/qa/questions/questionid/answers', (req, res) => {

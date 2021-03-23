@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const questionSchema = new Schema({
-  _id: mongoose.Types.ObjectId,
   id: Number,
   product_id: Number,
   body: String,
@@ -27,17 +26,21 @@ const answerSchema = new Schema({
 const counterSchema = new Schema({
   counter: Number
 })
-
+const photoSchema = new Schema({
+  id: Number,
+  answer_id: Number,
+  url: String
+})
 const Question = mongoose.model('Question', questionSchema);
 const Answer = mongoose.model('Answer', answerSchema);
-const Count = mongoose.model('Count', counterSchema, 'count')
+const Count = mongoose.model('Count', counterSchema, 'count');
+const Photo = mongoose.model('Photo', photoSchema, 'photo');
 
 //count all questions
 const getCurrentCount = () => {
   let query = Count.find();
   return query;
 }
-//Get all Questions
 const getAllQuestions = (productID) => {
   let query = Question.find({"product_id": productID});
   return query;
@@ -47,7 +50,6 @@ const getAnswers = (questionID) => {
   return query;
 }
 
-//Mark Question as reported
 const markQuestionReported = (questionID) => {
   const filter = {id: questionID};
   const update = {reported: 1}
@@ -77,7 +79,55 @@ const markAnswerHelpful = (answerID) => {
   return query;
 }
 
+const postQuestion = (question) => {
+  let body = question.body;
+  let name = question.name;
+  let email = question.email;
+  let product_id = question.product_id;
+  let id = question.id;
+  let rn = new Date().toISOString();
+  let newQuestion = new Question({
+    "product_id": product_id,
+    "id": id,
+    "body": body,
+    "date_written": rn,
+    "asker_name": name,
+    "asker_email": email,
+    "reported": 0,
+    "helpful": 0,
+    "answers": [],
+  })
+  return newQuestion.save();
+}
+
+const postAnswer = (answer) => {
+  let body = answer.body;
+  let name = answer.name;
+  let email = answer.email;
+  let product_id = answer.product_id;
+  let rn = new Date().toISOString();
+  let newanswer = new Answer({
+    "product_id": product_id,
+    "id": insertmyid,
+    "body": body,
+    "date_written": new Date(),
+    "asker_name": name,
+    "asker_email": email,
+    "reported": 0,
+    "helpful": 0,
+    "answers": [],
+  })
+
+}
+const getPhotos = (answerID) => {
+  let query = Photo.find({'answer_id': answerID});
+  return query;
+}
+
 module.exports = {
+  getPhotos: getPhotos,
+  postQuestion: postQuestion,
+  postAnswer: postAnswer,
   getCurrentCount: getCurrentCount,
   getAllQuestions: getAllQuestions,
   getAnswers: getAnswers,
