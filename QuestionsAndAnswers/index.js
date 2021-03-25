@@ -26,20 +26,18 @@ mongoose.connection
 
 //Get all questions
 app.get('/qa/questions/:productID', (req, res) => {
+  // console.log(req.params.productID);
   let questionsArray;
   let answersArray;
   let clientArray = [];
-  let clientPhotoArray = [];
   let loop = async function(q) {
     let copy = q._doc;
     copy.answers = await db.getAnswers(q.id)
-    console.log(copy);
     clientArray.push(copy);
   }
   db.getAllQuestions(req.params.productID)
   .then(async (data) => {
     questionsArray = data;
-    const queries = [];
     for (let i = 0; i < questionsArray.length; i++) {
       await loop(questionsArray[i]);
       if (i === questionsArray.length - 1) {
