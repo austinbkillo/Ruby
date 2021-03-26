@@ -1,10 +1,9 @@
-require('newrelic');
 const express = require('express');
 const app = express();
 const port = 3000;
 const mongoose = require('mongoose');
 const db = require('./dbqueries');
-mongoose.connect("/mongodb://127.0.0.1:27017/SDC", {useNewUrlParser: true})
+mongoose.connect("mongodb://172.31.22.243:27017/SDC", {useNewUrlParser: true})
 app.use(express.json());
 
 let questionCount;
