@@ -23,7 +23,7 @@ mongoose.connection
     console.log('listening at ' + port);
   })
 //loader
-app.get('/loaderio-7e9830f60c2e56e0b00ca7f958f02712', (req, res)=>{
+app.get('/loaderio-7e9830f60c2e56e0b00ca7f958f02712/', (req, res)=>{
   res.send('loaderio-7e9830f60c2e56e0b00ca7f958f02712')
 })
 //Get all questions
