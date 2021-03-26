@@ -22,7 +22,10 @@ mongoose.connection
   app.listen(port, ()=>{
     console.log('listening at ' + port);
   })
-
+//loader
+app.get('loaderio-7e9830f60c2e56e0b00ca7f958f02712', (req, res)=>{
+  res.send('loaderio-7e9830f60c2e56e0b00ca7f958f02712')
+})
 //Get all questions
 app.get('/qa/questions/:productID', (req, res) => {
   // console.log(req.params.productID);
