@@ -28,7 +28,7 @@ app.get('/loaderio-7e9830f60c2e56e0b00ca7f958f02712/', (req, res)=>{
 })
 //Get all questions
 app.get('/qa/questions/:productID', (req, res) => {
-  // console.log(req.params.productID);
+  console.log(req.params.productID);
   let questionsArray;
   let answersArray;
   let clientArray = [];
