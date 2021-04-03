@@ -28,7 +28,6 @@ app.get('/loaderio-7e9830f60c2e56e0b00ca7f958f02712/', (req, res)=>{
 })
 //Get all questions
 app.get('/qa/questions/:productID', (req, res) => {
-  console.log(req.params.productID);
   let questionsArray;
   let answersArray;
   let clientArray = [];
@@ -67,7 +66,6 @@ app.post('/qa/questions', (req, res) => {
   db.getCurrentCount()
   .then((data)=>{
     req.body.id = data[0].counter;
-    console.log(req.body.id);
   })
   db.postQuestion(req.body).then(
     (data1) => {
@@ -84,8 +82,7 @@ app.post('/qa/questions/questionid/answers', (req, res) => {
   let body = req.body.body;
   let name = req.body.name;
   let email = req.body.name;
-  console.log('receiving')
-  res.send('senderoni')
+  res.send('')
 })
 //Mark Question Reported
 app.put('/qa/questions/:id/report', (req, res) => {
